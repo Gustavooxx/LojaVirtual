@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 *.env
+*banco.sql
 
 # Editor directories and files
 .vscode/*
