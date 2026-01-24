@@ -1,11 +1,18 @@
-import { cadastrarUserValidation } from "../../validation/userCriarConta/criaContaValidation.js";
+import { cadastrarUser, consultarCPF } from "../../repository/userCriarConta/criarContaRepo.js";
+import { cadastrarUserValidation, validarCpfBanco } from "../../validation/userCriarConta/criaContaValidation.js";
 
 export async function criaContaService(info) {
     
     try{
-        await cadastrarUserValidation(info)
-        const id = criaContaService(info)
+        
+        cadastrarUserValidation(info);
+
+        let registro = await consultarCPF(info)
+        validarCpfBanco(registro)
+
+        let id = await cadastrarUser(info)
         return id;
+
     } catch(err){
         throw err;
     }

@@ -34,18 +34,22 @@ export async function cadastrarUserValidation(info) {
     if(!info.email_usuario)
         throw new Error('Obrigario colocar o email')
 
-    if(!info.dt_nascimento)
+    if(!info.dt_nascimanto)
         throw new Error('Obrigario colocar a data de nascimento')
 
     if( isNaN(info.cpf_usuario))
          throw new Error('É obrigatório que o CPF seja em números');
 
 
-    if(cadastro.cpf_usuario.length !== 11)
+    if(info.cpf_usuario.length !== 11)
          throw new Error('CPF deve ter 11 dígitos');
 
 
-    if(!validarCpf(cadastro.cpf_usuario))
-         throw new Error('CPF inválido');
 
+}
+
+export function validarCpfBanco(registro){
+    if(registro){
+        throw new Error('CPF ja cadastrado')
+    }
 }
