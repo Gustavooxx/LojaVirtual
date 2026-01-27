@@ -31,6 +31,7 @@ export default function Home() {
                         </div>
                         <div>
                             <img className='h-full w-130 object-cover' src={DoisRockeiros} alt="" />
+                            <h1>ola</h1>
                         </div>
                     </div>
                 </div>
