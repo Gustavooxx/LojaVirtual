@@ -1,55 +1,46 @@
-import { cadastrarUser } from "../../repository/userCriarConta/criarContaRepo.js";
-
 export function validarCpf(cpf) {
-    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+    if (!cpf || typeof cpf !== 'string') return false;
+    const clean = cpf.replace(/\D/g, '');
+    if (clean.length !== 11 || /^(\d)\1+$/.test(clean)) return false;
 
     let sum = 0;
-    for (let i = 0; i < 9; i++) {
-        sum += parseInt(cpf[i]) * (10 - i);
-    }
+    for (let i = 0; i < 9; i++) sum += parseInt(clean[i], 10) * (10 - i);
     let remainder = (sum * 10) % 11;
     let digit1 = remainder === 10 ? 0 : remainder;
-    if (digit1 !== parseInt(cpf[9])) return false;
+    if (digit1 !== parseInt(clean[9], 10)) return false;
 
     sum = 0;
-    for (let i = 0; i < 10; i++) {
-        sum += parseInt(cpf[i]) * (11 - i);
-    }
+    for (let i = 0; i < 10; i++) sum += parseInt(clean[i], 10) * (11 - i);
     remainder = (sum * 10) % 11;
     let digit2 = remainder === 10 ? 0 : remainder;
-    return digit2 === parseInt(cpf[10]);
+    return digit2 === parseInt(clean[10], 10);
 }
 
+export function cadastrarUserValidation(info) {
+    if (!info || typeof info !== 'object')
+        throw new Error('Dados do usuário inválidos');
 
-export async function cadastrarUserValidation(info) {
-    if(!info.nm_usuario)
-        throw new Error('Obrigario colocar o nome')
+    const { nm_usuario, sen_usuario, cpf_usuario, email_usuario, dt_nascimanto } = info;
 
-    if(!info.sen_usuario)
-        throw new Error('Obrigario colocar a senha')
+    if (!nm_usuario) throw new Error('Obrigatório colocar o nome');
+    if (!sen_usuario) throw new Error('Obrigatório colocar a senha');
+    if (!cpf_usuario) throw new Error('Obrigatório colocar o CPF');
+    if (!email_usuario) throw new Error('Obrigatório colocar o email');
+    if (!dt_nascimanto) throw new Error('Obrigatório colocar a data de nascimento');
 
-    if(!info.cpf_usuario)
-        throw new Error('Obrigario colocar o CPF')
+    const cpfStr = String(cpf_usuario).replace(/\D/g, '');
+    if (isNaN(Number(cpfStr))) throw new Error('É obrigatório que o CPF seja em números');
+    if (cpfStr.length !== 11) throw new Error('CPF deve ter 11 dígitos');
+    if (!validarCpf(cpfStr)) throw new Error('CPF inválido');
 
-    if(!info.email_usuario)
-        throw new Error('Obrigario colocar o email')
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(String(email_usuario))) throw new Error('Email inválido');
 
-    if(!info.dt_nascimanto)
-        throw new Error('Obrigario colocar a data de nascimento')
-
-    if( isNaN(info.cpf_usuario))
-         throw new Error('É obrigatório que o CPF seja em números');
-
-
-    if(info.cpf_usuario.length !== 11)
-         throw new Error('CPF deve ter 11 dígitos');
-
-
-
+    // validação simples da data (YYYY-MM-DD ou similar)
+    const date = new Date(dt_nascimanto);
+    if (Number.isNaN(date.getTime())) throw new Error('Data de nascimento inválida');
 }
 
-export function validarCpfBanco(registro){
-    if(registro){
-        throw new Error('CPF ja cadastrado')
-    }
+export function validarCpfBanco(registro) {
+    if (registro) throw new Error('CPF já cadastrado');
 }

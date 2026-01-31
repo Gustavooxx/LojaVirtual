@@ -2,6 +2,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import Home from './pages/Home'
 import Produtos from './pages/Produtos'
 import Produto from './pages/Produto'
+import Cadastro from './pages/cadastro'
 
 export default function Navigation() {
     return (
@@ -10,6 +11,7 @@ export default function Navigation() {
                 <Route path='/' element={<Home />} />
                 <Route path='/produtos' element={<Produtos />} />
                 <Route path='/produto' element={<Produto />} />
+                <Route path='/cadastro' element={<Cadastro />} />
             </Routes>
         </BrowserRouter>
     )

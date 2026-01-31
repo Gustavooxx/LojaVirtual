@@ -1,30 +1,66 @@
 import connection from "../connnection.js";
+import bcrypt from 'bcrypt';
 
 export async function cadastrarUser(info) {
     const comando = `
-    insert into usuarios (                 
-nm_usuario,     
-sen_usuario,             
-cpf_usuario,                
-email_usuario, 
-dt_nascimanto) values(?,MD5(?),?,?,?)
-    `
-    const [resposta] = await connection.query(comando, [
-        info.nm_usuario,
-        info.sen_usuario,
-        info.cpf_usuario,
-        info.email_usuario,
-        info.dt_nascimanto])
+    INSERT INTO usuarios (
+        nm_usuario,
+        sen_usuario,
+        cpf_usuario,
+        email_usuario,
+        dt_nascimanto
+    ) VALUES (?, ?, ?, ?, ?)
+    `;
 
-    return resposta;
+    try {
+        // criptografar a senha com bcrypt (10 salt rounds)
+        const senhaHash = await bcrypt.hash(info.sen_usuario, 10);
+
+        const [resposta] = await connection.query(comando, [
+            info.nm_usuario,
+            senhaHash,
+            info.cpf_usuario,
+            info.email_usuario,
+            info.dt_nascimanto
+        ]);
+
+        // resposta.insertId contém o id gerado pela inserção
+        return resposta.insertId ?? resposta;
+    } catch (err) {
+        console.error('SQL MESSAGE:', err.sqlMessage);
+        console.error('SQL COMPLETO:', err.sql);
+        throw err;
+    }
 }
 
-export async function consultarCPF(CPF) {
+export async function consultarCPF(cpf) {
     const comando = `
-    select * from usuarios
-    where cpf_usuario = ?
-    `
-    const [resposta] = await connection.query(comando, [CPF])
-    return resposta[0]
-    
+    SELECT * FROM usuarios
+    WHERE cpf_usuario = ?
+    `;
+
+    try {
+        const [resposta] = await connection.query(comando, [cpf]);
+        return resposta[0] ?? null;
+    } catch (err) {
+        console.error('SQL MESSAGE:', err.sqlMessage);
+        console.error('SQL COMPLETO:', err.sql);
+        throw err;
+    }
+}
+
+export async function veirificarUser(nome) {
+    const comando = `
+    SELECT * FROM usuarios
+    WHERE nm_usuario LIKE ?
+    `;
+
+    try {
+        const [resposta] = await connection.query(comando, [`%${nome}%`]);
+        return resposta;
+    } catch (err) {
+        console.error('SQL MESSAGE:', err.sqlMessage);
+        console.error('SQL COMPLETO:', err.sql);
+        throw err;
+    }
 }

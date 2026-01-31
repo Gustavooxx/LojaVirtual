@@ -2,18 +2,18 @@ import { cadastrarUser, consultarCPF } from "../../repository/userCriarConta/cri
 import { cadastrarUserValidation, validarCpfBanco } from "../../validation/userCriarConta/criaContaValidation.js";
 
 export async function criaContaService(info) {
-    
-    try{
-        
+    try {
+        // validação básica dos campos
         cadastrarUserValidation(info);
 
-        let registro = await consultarCPF(info)
-        validarCpfBanco(registro)
+        // consultar por CPF (somente o valor do cpf)
+        const registro = await consultarCPF(info.cpf_usuario);
+        validarCpfBanco(registro);
 
-        let id = await cadastrarUser(info)
+        // cadastrar e retornar id inserido
+        const id = await cadastrarUser(info);
         return id;
-
-    } catch(err){
+    } catch (err) {
         throw err;
     }
 }
