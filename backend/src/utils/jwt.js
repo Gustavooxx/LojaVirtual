@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
-const KEY = process.env.JWT_SECRET || 'sua-chave-secreta-super-segura'
+const KEY = process.env.JWT_SECRET 
 
 
 export function generateToken(userInfo) {
