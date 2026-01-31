@@ -20,13 +20,13 @@ export function cadastrarUserValidation(info) {
     if (!info || typeof info !== 'object')
         throw new Error('Dados do usuário inválidos');
 
-    const { nm_usuario, sen_usuario, cpf_usuario, email_usuario, dt_nascimanto } = info;
+    const { nm_usuario, sen_usuario, cpf_usuario, email_usuario, dt_nascimento } = info;
 
     if (!nm_usuario) throw new Error('Obrigatório colocar o nome');
     if (!sen_usuario) throw new Error('Obrigatório colocar a senha');
     if (!cpf_usuario) throw new Error('Obrigatório colocar o CPF');
     if (!email_usuario) throw new Error('Obrigatório colocar o email');
-    if (!dt_nascimanto) throw new Error('Obrigatório colocar a data de nascimento');
+    if (!dt_nascimento) throw new Error('Obrigatório colocar a data de nascimento');
 
     const cpfStr = String(cpf_usuario).replace(/\D/g, '');
     if (isNaN(Number(cpfStr))) throw new Error('É obrigatório que o CPF seja em números');
@@ -37,7 +37,7 @@ export function cadastrarUserValidation(info) {
     if (!emailRegex.test(String(email_usuario))) throw new Error('Email inválido');
 
     // validação simples da data (YYYY-MM-DD ou similar)
-    const date = new Date(dt_nascimanto);
+    const date = new Date(dt_nascimento);
     if (Number.isNaN(date.getTime())) throw new Error('Data de nascimento inválida');
 }
 

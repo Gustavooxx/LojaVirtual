@@ -13,6 +13,7 @@ dist-ssr
 *.local
 *.env
 *banco.sql
+*REFATORACAO_LOGIN.md
 
 # Editor directories and files
 .vscode/*

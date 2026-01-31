@@ -8,7 +8,7 @@ export async function cadastrarUser(info) {
         sen_usuario,
         cpf_usuario,
         email_usuario,
-        dt_nascimanto
+        dt_nascimento
     ) VALUES (?, ?, ?, ?, ?)
     `;
 
@@ -21,7 +21,7 @@ export async function cadastrarUser(info) {
             senhaHash,
             info.cpf_usuario,
             info.email_usuario,
-            info.dt_nascimanto
+            info.dt_nascimento
         ]);
 
         // resposta.insertId contém o id gerado pela inserção

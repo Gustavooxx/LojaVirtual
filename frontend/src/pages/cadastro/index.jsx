@@ -5,7 +5,7 @@ export default function Cadastro() {
     return (
         <div id="Cadastro" className="h-auto" >
             <h1 className="flex text-blue-500 font-bold text-3xl text-"  >Cadastrar-se</h1>
-            <div>
+            <div >
                 <form>
                     <input type="text" placeholder="Nome" />
                     <input type="email" placeholder="Email" />
