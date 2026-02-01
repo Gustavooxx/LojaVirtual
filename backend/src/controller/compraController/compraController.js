@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { compraService } from "../../service/compraService/compraService.js";
 import { getAuthentication } from "../../utils/jwt.js";
-import { listarCompras } from "../../repository/compraRepo/compraRepo.js";
+import { itensVendas, listarCompras } from "../../repository/compraRepo/compraRepo.js";
 
 const compra= Router();
 const auth = getAuthentication();
@@ -15,6 +15,20 @@ compra.post('/compra/usuario/:endeID',auth, async (req, res) => {
         res.status(201).json(resposta);
     } catch(err){
         res.status(400).json({error: err.message})
+    }
+})
+
+compra.post('/compra/itensvenda/:compraID/:produtoID/:quantidade/:preco', auth, async (req, res) => {
+    try {
+        const compra_id = req.params.compraID;
+        const produto_id = req.params.produtoID;
+        const quantidade = req.params.quantidade;
+        const preco = req.params.preco;
+        const resposta = await itensVendas(compra_id, produto_id, quantidade, preco);
+        res.status(201).json({message: 'Itens da venda cadastrados com sucesso!', resposta});
+    } catch(err){
+        res.status(400).json({error: err.message})
+    
     }
 })
 

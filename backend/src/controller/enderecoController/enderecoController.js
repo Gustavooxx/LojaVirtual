@@ -9,8 +9,8 @@ const auth = getAuthentication();
 endereco.post("/cadastrarEndereco", auth, async (req, res) => {
     try{
         const endereco = req.body;
-        const resposta = await cadastrarEnderecoService(endereco);
-
+        const usuario_id = req.user && req.user.usuario_id
+        const resposta = await cadastrarEnderecoService(endereco, usuario_id);
         res.status(201).json({message: 'Endereço cadastrado com sucesso!', id: resposta});
     } catch (error){
         const msg = error && error.message ? error.message : 'Erro interno no servidor';

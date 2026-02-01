@@ -9,6 +9,19 @@ export async function  compraRepo(compra,usuario_id) {
     return resposta;
 } 
 
+export async function itensVendas( compra_id, produto_id, quantidade, preco) {
+    const comando = `
+    insert into itens_compra (compra_id, produto_id, quantidade, preco_unitario)
+    values (?,?,?,?);
+    `   
+    const listarItens = `
+    sele
+    `
+
+    const [resposta] = await connection.execute(comando, [compra_id, produto_id, quantidade, preco]);
+    return resposta;
+}
+
 export async function 
 listarCompras() {
     const comando = `
