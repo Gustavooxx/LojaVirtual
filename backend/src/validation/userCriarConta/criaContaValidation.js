@@ -32,10 +32,12 @@ export function cadastrarUserValidation(info) {
     if (isNaN(Number(cpfStr))) throw new Error('É obrigatório que o CPF seja em números');
     if (cpfStr.length !== 11) throw new Error('CPF deve ter 11 dígitos');
     if (!validarCpf(cpfStr)) throw new Error('CPF inválido');
-
+ 
     const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!senhaRegex.test(sen_usuario)) throw new Error('Senha deve ter no mínimo 8 caracteres, incluindo letras e números');
 
+    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
+    if (!nameRegex.test(nm_usuario)) throw new Error('Nome deve conter apenas letras e espaços');
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(String(email_usuario))) throw new Error('Email inválido');
